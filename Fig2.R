@@ -103,9 +103,9 @@ rownames(df_hat) = rownames(dfs2)
 
 # ── 绘图 ──────────────────────────────────────────────────────────────────────
 
-# 颜色方案：点用柔和色，拟合线用加深版
-col_point <- c(S1 = "#E8A0A0", S2 = "#E8A0A0", H1 = "#85B8D8", H2 = "#85B8D8")
-col_line  <- c(S1 = "#CC4422", S2 = "#CC4422", H1 = "#2C6FA0", H2 = "#2C6FA0")
+# 颜色方案：点统一色，拟合线区分 S/H
+col_point <- c(S1 = "#58CAF1", S2 = "#58CAF1", H1 = "#58CAF1", H2 = "#58CAF1")
+col_line  <- c(S1 = "#03829E", S2 = "#03829E", H1 = "#03829E", H2 = "#03829E")
 
 # 构建散点数据（observed）
 scatter_df <- do.call(rbind, lapply(rownames(dfs2), function(hap) {
@@ -177,7 +177,20 @@ p <- ggplot() +
   )
 
 # 点和线分别用独立颜色：重新组织为两层独立 aes
+.p1_bg <- data.frame(
+  haplotype = factor(hap_order, levels = hap_order),
+  bg        = c("#FEF5F6", "#FEF5F6", "#F2F9FC", "#F2F9FC"),
+  stringsAsFactors = FALSE
+)
+
 p1 <- ggplot() +
+  geom_rect(
+    data = .p1_bg,
+    aes(fill = bg),
+    xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf,
+    inherit.aes = FALSE
+  ) +
+  scale_fill_identity() +
   geom_point(
     data  = scatter_df,
     aes(x = x, y = y, color = haplotype),
@@ -274,7 +287,7 @@ Y = Y[order(times),]
 times = rowSums(Y)
 M = 3
 smooth = "power_equation"
-effect_thr = 1e-1
+
 
 
 MTODE <- function(Y, times, M = 5, smooth = "bs",effect_thr = 1e-1) {
