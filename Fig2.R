@@ -162,7 +162,7 @@ p <- ggplot() +
   facet_wrap(~ haplotype, ncol = 4) +
   labs(
     x = "Locus Index",
-    y = "Haplotype Expression"
+    y = "Effect"
   ) +
   theme_classic(base_size = 13) +
   theme(
@@ -209,7 +209,7 @@ p1 <- ggplot() +
   facet_wrap(~ haplotype, ncol = 4) +
   labs(
     x = "Locus Index",
-    y = "Haplotype Expression"
+    y = "Effect"
   ) +
   theme_classic(base_size = 13) +
   theme(
@@ -1852,3 +1852,4 @@ network_plot(res$network_data)
 
 # 3. 关闭图形设备，完成文件保存 (非常重要，漏掉这句文件会损坏)
 dev.off()
+ggsave('Fig2A.pdf',p1,width = 13,height=3)
